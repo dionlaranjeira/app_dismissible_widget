@@ -20,7 +20,39 @@ class _HomeState extends State<Home> {
           Expanded(child:ListView.builder(
             itemCount: _nomes.length,
             itemBuilder: (context,index){
-              return ListTile(title: Text(_nomes[index]),);
+
+              final item = _nomes[index];
+              return Dismissible(
+                  background: Container(
+                    color: Colors.green,
+                    padding: EdgeInsets.all(16),
+                    child: Row(children: const [
+                      Icon(Icons.edit, color:Colors.white)
+                    ],),
+                  ),
+                  secondaryBackground: Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: const [
+                      Icon(Icons.delete, color:Colors.white)
+                    ],),
+                  ),
+                  onDismissed: (direction){
+                      if(direction == DismissDirection.startToEnd){
+                        setState(() {
+                          _nomes[index] = "editado";
+                        });
+                      }else{
+                        setState(() {
+                          _nomes.removeAt(index);
+                        });
+                      }
+
+                  },
+                  key: Key(item+index.toString()),
+                  child: ListTile(title: Text(_nomes[index]),));
             } ),
           ),
         ],
